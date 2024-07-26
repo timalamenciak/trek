@@ -1,0 +1,109 @@
+id: http://w3id.org/ontogpt/trek
+name: trek-template
+title: TReK Template
+description: >-
+  A template for TReK
+license: https://creativecommons.org/publicdomain/zero/1.0/
+prefixes:
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  ENVO: http://purl.obolibrary.org/obo/ENVO_
+  SWEET: http://sweetontology.net/
+
+default_prefix: trek
+default_range: string
+
+imports:
+  - linkml:types
+  - core
+  
+classes:
+  TReKAnnotations:
+    tree_root: true
+    is_a: NamedEntity
+    attributes:
+      dois:
+        description: permanent identifier for the article.
+        range: DOI
+        annotations:
+          prompt: extract the DOI related to the article.
+      management_actions:
+        description: A semicolon-separated list of ecosystem management actions being taken as part of the study.
+        range: ManagementAction
+        multivalued: true
+        annotations:
+          prompt: semicolon-separated list of environmental management actions analyzed
+      target_species:
+        description: A semicolon-separated list of focal species for the restoration project.
+        multivalued: true
+        range: FocalSpecies
+        annotations:
+          prompt: semicolon-separated list of the scientific names of species that are the focus of the restoration project
+      ecosystem_types: 
+        description: A semicolon-separated list of the types of ecosystem the restoration is taking place in.
+        range: Ecosystem
+        multivalued: true
+        annotations:
+          prompt: semicolon-separated list of ecosystem types
+      study_sites: 
+        description: A semicolon-separated list of the location(s) of the research study
+        range: Site
+        multivalued: true
+        annotations:
+          prompt: semicolon-separated list of locations, using decimal degrees, of the study sites
+      degradation_types:
+        range: Degradation
+        description: A semicolon-separated list of the types of degradation being addressed.
+        multivalued: true
+        annotations:
+          prompt: semicolon-separated list of the types of degradation addressed by the restoration project
+  
+  DOI:
+    is_a: NamedEntity
+  
+  ManagementAction: 
+    is_a: NamedEntity
+    description: An ecosystem management action being taken as part of the study.
+    id_prefixes:
+      - ENVO
+      - ENVTHES
+    annotations:
+      annotators: sqlite:obo:envo, bioportal:envthes
+  
+  FocalSpecies:
+    is_a: NamedEntity
+    description: A focal species in the restoration project.
+    id_prefixes:
+      - NCBITAXON
+    annotations:
+      annotators: sqlite:obo:envo, bioportal:envthes, bioportal:ncbitaxon
+
+  Ecosystem:
+    is_a: NamedEntity
+    description: An ecosystem the restoration is taking place in.
+    id_prefixes:
+      - ENVO
+      - SWEET
+      - ENVTHES
+    annotations:
+      annotators: sqlite:obo:envo, bioportal:envthes  
+
+  Site: 
+    is_a: NamedEntity
+    description: A geographic location of the research study.
+    id_prefixes:
+      - GAZ
+      - ENVTHES
+    annotations:
+      annotators: sqlite:obo:envo, bioportal:gaz, bioportal:envthes
+  
+  Degradation:
+    is_a: NamedEntity
+    description: A type of ecological degradation being addressed.
+    id_prefixes:
+      - ENVO
+      - SWEET
+      - ENVTHES
+    annotations:
+      annotators: sqlite:obo:envo, bioportal:envthes 
+      
